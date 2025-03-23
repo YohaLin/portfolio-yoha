@@ -1,0 +1,45 @@
+---
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+import Overlay from "./Overlay.astro";
+import clsx from "clsx";
+const { pageTitle, className } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="relative p-2 min-h-screen">
+    <!-- Overlay 提供紙感背景-->
+    <Overlay />
+
+    <Header />
+
+    <div
+      id="site-wrapper"
+      class="border-(length:--my-border) flex-1 overflow-hidden mt-[calc(var(--my-border)*-1)]"
+    >
+      <!-- 滾動容器 -->
+      <div class="h-full overflow-x-hidden overflow-y-auto no-scrollbar">
+        <div class={clsx(className)}>
+          <slot />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      import "../scripts/menu.js";
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+---
+/**
+ * 
+ * 1. allPosts.map((post: any) => post.frontmatter.tags)
+  這部分使用 map() 從每篇文章中提取 frontmatter.tags 屬性
+  假設每篇文章的 frontmatter.tags 是一個陣列，如 ["astro", "blogging"]
+  結果會得到一個二維陣列，例如：[["astro", "blogging"], ["astro", "community"], ["learning in public"]]
+
+  2. flat()
+  將上一步的二維陣列「扁平化」，變成一維陣列
+  例如：["astro", "blogging", "astro", "community", "learning in public"]
+  這一步讓所有標籤都在同一個層級，但可能有重複項
+
+  3. new Set(...)
+  Set 是 JavaScript 的一種資料結構，其特性是只能存儲唯一值（不允許重複）
+  將陣列轉換為 Set 會自動去除重複項
+  例如：Set {"astro", "blogging", "community", "learning in public"}
+
+  4. [...new Set()]
+  展開運算符 ... 將 Set 轉換回陣列
+  最終得到一個無重複項的標籤陣列
+  例如：["astro", "blogging", "community", "learning in public"]
+  
+  這是一種在 JavaScript 中常用的技巧，用來從一個陣列中取得唯一值。這樣得到的 uniqueTags 變數就包含了所有文章中使用過的、不重複的標籤清單。
+ * 
+ */
+import { getCollection } from "astro:content";
+import BlogPost from "../../components/BlogPost.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("blog");
+  const uniqueTags = [
+    ...new Set(allPosts.map((post) => post.data.tags).flat()),
+  ];
+
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    );
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout pageTitle={tag}>
+  <p>Posts tagged with {tag}</p>
+  <ul>
+    {
+      posts.map((post: any) => (
+        <BlogPost url={`/posts/${post.id}`} title={post.data.title} />
+      ))
+    }
+  </ul>
+</BaseLayout>
