@@ -4,43 +4,6 @@ import CaretRight from "../assets/svgs/CaretRight";
 import Divider from "../components/Divider";
 import BlockLayout from "../layouts/BlockLayout";
 
-const EXPERIENCE = [
-  {
-    order: 0,
-    duration: "09.2023 - 09.2024",
-    title: "前端工程師",
-    company: "Pergolas investing",
-    content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe officia recusandae architecto quaerat aliquam quisquam provident nemo libero? Eius, voluptates at. Enim odio soluta atque aliquam aspernatur possimus quos. Voluptas.",
-    projects: [
-      {
-        name: "PGL",
-        link: "http://www.example.com",
-      },
-    ],
-    tags: ["NextJS", "React"],
-  },
-  {
-    order: 1,
-    duration: "03.2022 - 08.2023",
-    title: "全端開發工程師",
-    company: "DigiTech Solutions",
-    content:
-      "負責公司核心產品的前後端開發與維護，參與專案規劃與技術選型，建立團隊開發標準與流程，提升產品穩定性與使用者體驗。導入自動化測試與CI/CD流程，有效減少發布錯誤率。",
-    projects: [
-      {
-        name: "企業管理系統",
-        link: "http://www.digicrm.com",
-      },
-      {
-        name: "資料分析平台",
-        link: "http://www.digianalytics.com",
-      },
-    ],
-    tags: ["Vue.js", "Node.js", "MongoDB", "Docker"],
-  },
-];
-
 const Experience = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentExp = EXPERIENCE[currentIndex];
@@ -62,21 +25,23 @@ const Experience = () => {
   };
 
   return (
-    <BlockLayout className="col-span-1 md:col-span-4 flex flex-col items-end">
-      <div className="flex justify-end items-center gap-[0.5px] border-(length:--my-border) w-fit -mr-1.5 -mt-[calc(var(--my-border)+4px)]">
+    <BlockLayout className="col-span-1 md:col-span-4 flex flex-col items-end min-h-[50vh]">
+      <div className="flex justify-end items-center gap-[0.5px] border-(length:--my-border) w-fit -mr-1.5 -mt-[calc(var(--my-border)+4px)] md:w-[calc(100%+12px)] md:justify-center">
         <button
           type="button"
-          className="cursor-pointer hover:opacity-70 transition-opacity"
+          className="cursor-pointer hover:opacity-70 transition-opacity lg:order-3"
           onClick={handlePrev}
         >
           <CaretLeft width={28} height={28} />
         </button>
-        <Divider className="h-7" />
-        <p className="text-sm px-2">{currentExp.duration}</p>
-        <Divider className="h-7" />
+        <Divider className="h-7 lg:order-2" />
+        <p className="text-sm px-2 text-center md:flex-1 lg:order-1">
+          {currentExp.duration}
+        </p>
+        <Divider className="h-7 lg:order-4" />
         <button
           type="button"
-          className="cursor-pointer hover:opacity-70 transition-opacity"
+          className="cursor-pointer hover:opacity-70 transition-opacity lg:order-5"
           onClick={handleNext}
         >
           <CaretRight width={28} height={28} />
@@ -143,3 +108,41 @@ const Experience = () => {
 };
 
 export default Experience;
+
+
+const EXPERIENCE = [
+  {
+    order: 0,
+    duration: "09.2023 - 09.2024",
+    title: "前端工程師",
+    company: "Pergolas investing",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe officia recusandae architecto quaerat aliquam quisquam provident nemo libero? Eius, voluptates at. Enim odio soluta atque aliquam aspernatur possimus quos. Voluptas.",
+    projects: [
+      {
+        name: "PGL",
+        link: "http://www.example.com",
+      },
+    ],
+    tags: ["NextJS", "React"],
+  },
+  {
+    order: 1,
+    duration: "03.2022 - 08.2023",
+    title: "全端開發工程師",
+    company: "DigiTech Solutions",
+    content:
+      "負責公司核心產品的前後端開發與維護，參與專案規劃與技術選型，建立團隊開發標準與流程，提升產品穩定性與使用者體驗。導入自動化測試與CI/CD流程，有效減少發布錯誤率。",
+    projects: [
+      {
+        name: "企業管理系統",
+        link: "http://www.digicrm.com",
+      },
+      {
+        name: "資料分析平台",
+        link: "http://www.digianalytics.com",
+      },
+    ],
+    tags: ["Vue.js", "Node.js", "MongoDB", "Docker"],
+  },
+];

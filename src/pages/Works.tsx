@@ -37,23 +37,28 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
     if (container && section) {
       // 獲取水平滾動區域的寬度
       const scrollWidth = section.offsetWidth;
+      const containerWidth = container.offsetWidth;
+
+      // 計算實際需要滾動的距離
+      const scrollDistance = scrollWidth - containerWidth;
 
       // 創建水平滾動動畫
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: triggerRef.current,
-          start: "-56 top",
-          end: () => `+=${scrollWidth}`,
+          start: "-20 top", // 可以根據需要調整
+          end: () => `+=${scrollDistance + 100}`, // 增加一些額外距離確保完全滾動
           scrub: true,
           pin: true,
           anticipatePin: 1,
-          markers: false, // 開發時可設為 true 以查看觸發點
+          pinSpacing: true, // 使用 true 而不是 "margin"
+          markers: false, // 生產環境應設為 false
         },
       });
 
       // 添加水平滾動動畫
       tl.to(section, {
-        x: () => -(scrollWidth - container.offsetWidth),
+        x: -scrollDistance,
         ease: "none",
       });
 
@@ -70,22 +75,22 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
 
   return (
     <BlockLayout className="col-span-1 md:col-span-12">
-      <div ref={triggerRef} className="h-fit overflow-hidden">
+      <div ref={triggerRef} className="flex flex-col gap-1 h-fit overflow-hidden pb-2">
         <h2>作品</h2>
 
         <div
           ref={containerRef}
-          className="relative w-full h-[65vh] overflow-hidden"
+          className="relative w-full h-[calc(100vh-4.5rem)] overflow-hidden"
         >
           <div
             ref={sectionRef}
-            className="absolute top-0 left-0 flex gap-2 h-full"
+            className="absolute top-0 left-0 flex gap-4 h-full px-2"
           >
             {/* 映射作品項目 */}
             {works.map((work) => (
               <div
                 key={work.id}
-                className="w-[calc(100vw-3.5rem)] h-full bg-gray-100 rounded-lg flex flex-col items-center"
+                className="flex-shrink-0 w-[calc(100vw-4.5rem)] h-full bg-gray-100 rounded-lg flex flex-col items-center lg:w-[calc(1200px-1.75rem)]"
               >
                 <img
                   src={work.imageSrc}

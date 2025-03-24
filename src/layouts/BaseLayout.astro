@@ -20,20 +20,22 @@ const { pageTitle, className } = Astro.props;
     />
     <title>{pageTitle}</title>
   </head>
-  <body class="relative p-2 min-h-screen">
-    <!-- Overlay 提供紙感背景-->
-    <Overlay />
+  <body class="relative p-2 min-h-screen w-screen">
+    <div class="max-w-[1200px] my-0 mx-auto">
+      <!-- Overlay 提供紙感背景-->
+      <Overlay />
 
-    <Header />
+      <Header />
 
-    <div
-      id="site-wrapper"
-      class="border-(length:--my-border) flex-1 overflow-hidden mt-[calc(var(--my-border)*-1)]"
-    >
-      <!-- 滾動容器 -->
-      <div class="h-full overflow-x-hidden overflow-y-auto no-scrollbar">
-        <div class={clsx(className)}>
-          <slot />
+      <div
+        id="site-wrapper"
+        class="border-(length:--my-border) flex-1 overflow-hidden mt-[calc(var(--my-border)*-1)]"
+      >
+        <!-- 滾動容器 -->
+        <div class="h-full overflow-x-hidden overflow-y-auto no-scrollbar">
+          <div class={clsx(className)}>
+            <slot />
+          </div>
         </div>
       </div>
     </div>

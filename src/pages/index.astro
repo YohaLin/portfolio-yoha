@@ -1,8 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BlockLayout from "../layouts/BlockLayout";
+import Contact from "./Contact";
 import Experience from "./Experience";
 import Intro from "./Intro";
+import Prescription from "./Prescription";
+import Skills from "./Skills";
 import Works from "./Works";
 ---
 
@@ -10,23 +12,19 @@ import Works from "./Works";
   <div class="grid grid-cols-1 md:grid-cols-12 gap-[var(--my-border)]">
     <Intro />
 
-    <Experience client:load />
+    <Experience client:only="react" />
+
     <Works client:only="react" />
 
-    <BlockLayout className="col-span-1 md:col-span-12">
-      <h1>作品</h1>
-    </BlockLayout>
+    <Skills client:only="react" />
 
-    <BlockLayout className="col-span-1 md:col-span-12">
-      <h1>技能</h1>
-    </BlockLayout>
+    <Contact client:only="react" />
 
-    <BlockLayout className="col-span-1 md:col-span-4">
-      <h1>聯絡</h1>
-    </BlockLayout>
-
-    <BlockLayout className="col-span-1 md:col-span-8">
-      <h1>處方箋</h1>
-    </BlockLayout>
+    <Prescription
+      title="前端處方箋"
+      symptom="適應症"
+      description="藉由 Astro 快速學習 MSW"
+      subDescription="別等後端了！自己先做假資料吧～"
+    />
   </div>
 </BaseLayout>
