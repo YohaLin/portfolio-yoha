@@ -165,6 +165,6 @@ pre {
   }
   100% {
     stroke-dashoffset: 0;
-    fill: black;
+    fill: #D45456;
   }
 }
