@@ -1,5 +1,6 @@
 ---
 import Header from "../components/Header.astro";
+import Logo from "../components/Logo";
 import "../styles/global.css";
 import Overlay from "./Overlay.astro";
 import clsx from "clsx";
@@ -20,28 +21,25 @@ const { pageTitle, className } = Astro.props;
     />
     <title>{pageTitle}</title>
   </head>
-  <body class="relative p-2 min-h-screen w-screen">
+  <body class="relative p-2 min-h-screen w-screen overflow-auto">
     <div class="max-w-[1200px] my-0 mx-auto">
       <!-- Overlay 提供紙感背景-->
       <Overlay />
-
+      <Logo />
       <Header />
 
       <div
         id="site-wrapper"
-        class="border-(length:--my-border) flex-1 overflow-hidden mt-[calc(var(--my-border)*-1)]"
+        class="border-(length:--my-border) flex-1 mt-[calc(var(--my-border)*-1)]"
       >
-        <!-- 滾動容器 -->
-        <div class="h-full overflow-x-hidden overflow-y-auto no-scrollbar">
-          <div class={clsx(className)}>
-            <slot />
-          </div>
+        <div class={clsx(className)}>
+          <slot />
         </div>
       </div>
-    </div>
 
-    <script>
-      import "../scripts/menu.js";
-    </script>
+      <script>
+        import "../scripts/menu.js";
+      </script>
+    </div>
   </body>
 </html>
