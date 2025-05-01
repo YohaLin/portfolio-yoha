@@ -2,7 +2,7 @@ import BlockLayout from "../layouts/BlockLayout";
 
 const Intro = () => {
   return (
-    <BlockLayout className="col-span-1 md:col-span-8">
+    <BlockLayout className="col-span-1 lg:col-span-8">
       <h1 className="font-mono">YOHA</h1>
       <h3>一位從藥學轉職的前端工程師。</h3>
       <img src="/images/website/herb.png" alt="herb" />

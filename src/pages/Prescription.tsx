@@ -20,7 +20,7 @@ const Prescription: React.FC<PrescriptionProps> = ({
   className = "",
 }) => {
   return (
-    <BlockLayout className={`col-span-1 md:col-span-8 ${className}`}>
+    <BlockLayout className={`col-span-1 lg:col-span-8 ${className}`}>
       <div className="relative overflow-hidden h-full border-2 border-black p-4 md:p-6 bg-white">
         {/* 圓點邊框裝飾 */}
         <div className="absolute top-0 left-0 w-full h-full">

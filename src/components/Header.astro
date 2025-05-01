@@ -1,17 +1,29 @@
 ---
 import Divider from "./Divider";
+
+const links = [
+  {
+    title: "關於 Yoha",
+    href: "/",
+  },
+  {
+    title: "前端處方箋",
+    href: "/posts/msw/",
+  },
+  {
+    title: "作品集",
+    href: "/blog",
+  },
+];
 ---
 
 <header
   class="sticky top-0 z-10 border-(length:--my-border) text-xs bg-white w-full"
 >
   <ul class="flex items-center justify-between w-full h-12">
-    <li class="flex-1 text-center font-mono"><a href="/">關於 Yoha</a></li>
-    <Divider className="h-6" />
-    <li class="flex-1 text-center font-mono"><a href="/blog">前端處方箋</a></li>
-    <Divider className="h-6" />
-    <li class="flex-1 text-center font-mono">
-      <a href="/posts/msw/">作品集</a>
-    </li>
+    {links.map(item => (
+      <li class="flex-1 text-center font-mono text-sm md:text-xl"><a href={item.href}>{item.title}</a></li>
+    <Divider className="h-6 last:hidden" />
+    ))}
   </ul>
 </header>

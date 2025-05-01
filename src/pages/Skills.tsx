@@ -130,7 +130,7 @@ const Skills = () => {
   ];
 
   return (
-    <BlockLayout className="col-span-1 md:col-span-12 md:p-2">
+    <BlockLayout className="col-span-1 lg:col-span-12 md:p-2">
       <div className="flex flex-col gap-2">
         {/* 前端技能 - 左到右 */}
         <InfiniteScrollTags

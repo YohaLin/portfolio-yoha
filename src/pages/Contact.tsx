@@ -2,7 +2,7 @@ import BlockLayout from "../layouts/BlockLayout";
 
 const Contact = () => {
   return (
-    <BlockLayout className="col-span-1 md:col-span-4 md:p-2">
+    <BlockLayout className="col-span-1 lg:col-span-4 md:p-2">
       <div className="p-2 md:p-4 flex flex-col items-center h-full text-center border-(length:--my-border) border-dotted">
         {/* 文案部分 */}
         <div className="">
