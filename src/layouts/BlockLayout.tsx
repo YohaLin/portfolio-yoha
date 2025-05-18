@@ -10,7 +10,7 @@ const BlockLayout: FC<Props_BlockLayout> = ({ className, children }) => {
   return (
     <div
       className={clsx(
-        "p-1 border-(length:--my-border) -m-(--my-border)",
+        "p-1 lg:p-5 border-(length:--my-border) -m-(--my-border)",
         className
       )}
     >

@@ -3,6 +3,7 @@ import CaretLeft from "../assets/svgs/CaretLeft";
 import CaretRight from "../assets/svgs/CaretRight";
 import Divider from "../components/Divider";
 import BlockLayout from "../layouts/BlockLayout";
+import Hashtag from "../components/Hashtag";
 
 const Experience = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,7 +27,7 @@ const Experience = () => {
 
   return (
     <BlockLayout className="col-span-1 lg:col-span-4 flex flex-col items-end min-h-[650px] sm:min-h-[500px] lg:min-h-[700px] xl:min-h-[650px]">
-      <div className="flex justify-end items-center gap-[0.5px] border-(length:--my-border) w-fit -mr-1.5 -mt-[calc(var(--my-border)+4px)] lg:w-[calc(100%+12px)] lg:justify-center">
+      <div className="flex justify-end items-center gap-[0.5px] border-(length:--my-border) w-fit mr-[calc(var(--my-border)-8px)] -mt-[calc(var(--my-border)+4px)] lg:-mr-[calc(var(--my-border)+20px)] lg:-mt-[calc(var(--my-border)+20px)] lg:w-[calc(100%+44px)] lg:justify-center">
         <button
           type="button"
           className="cursor-pointer hover:opacity-70 transition-opacity lg:order-3"
@@ -98,12 +99,7 @@ const Experience = () => {
             <p className="text-sm font-medium mb-1">技術:</p>
             <div className="flex flex-wrap gap-1">
               {currentExp.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-block px-2 py-0.5 bg-gray-200 text-gray-800 rounded text-xs"
-                >
-                  {tag}
-                </span>
+                <Hashtag key={index} tag={tag} />
               ))}
             </div>
           </div>

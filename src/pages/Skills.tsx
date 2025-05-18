@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import BlockLayout from "../layouts/BlockLayout";
+import Hashtag from "../components/Hashtag";
 
 // 定義技能類型
 interface Skill {
@@ -83,9 +84,11 @@ const InfiniteScrollTags: React.FC<InfiniteScrollTagsProps> = ({
     <div ref={containerRef} className="overflow-hidden">
       <div ref={itemsRef} className="flex flex-nowrap gap-4">
         {skills.map((skill) => (
-          <div key={skill.id} className={`skill-tag ${tagClassName}`}>
-            {skill.name}
-          </div>
+          <Hashtag
+            key={skill.id}
+            tag={skill.name}
+            className={`skill-tag ${tagClassName}`}
+          />
         ))}
       </div>
     </div>

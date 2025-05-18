@@ -1,15 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Tenro+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Tenor+Sans&display=swap");
+@font-face {
+  font-family: HanaMeatball-Medium;
+  src:
+    url(https://cdn.jsdelivr.net/gh/max32002/max-hana@1.1/webfont/HanaMeatball-Medium.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/gh/max32002/max-hana@1.1/webfont/HanaMeatball-Medium.woff)
+      format("woff");
+}
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
 
 @theme {
   --my-border: 2px;
+  --font-tenro: "Tenro Sans", "sans-serif";
+  --font-istok: "Istok Web", "sans-serif";
 }
 
 /* 設定字體 */
 @layer base {
   /* 設定所有英文字體為 Italiana */
   body {
-    font-family: "Italiana", serif;
+    font-family: "Italiana", "HanaMeatball-Medium", "Noto Serif TC", serif;
     background-color: white;
     box-sizing: border-box;
   }
@@ -23,16 +35,19 @@
   h6 {
     padding: 0;
     margin: 0;
-    font-family: "Noto Sans", "Noto Sans TC", sans-serif;
+    font-family: '"Noto Sans"', "Noto Sans TC", sans-serif;
     font-weight: 500;
   }
 
   /* 設定所有段落文字使用 Noto Serif TC */
-  p,
+  /* p,
   li,
-  blockquote,
-  figcaption {
+  blockquote figcaption {
     font-family: "Noto Serif TC", serif;
+  } */
+
+  * {
+    letter-spacing: 0.2px;
   }
 }
 
@@ -58,7 +73,7 @@ body {
   width: 100%;
   min-height: 100vh;
   /* max-width: 80ch; */
-  padding: 1rem;
+  /* padding: 1rem; */
   line-height: 1.5;
 }
 
@@ -165,6 +180,6 @@ pre {
   }
   100% {
     stroke-dashoffset: 0;
-    fill: #D45456;
+    fill: #d45456;
   }
 }

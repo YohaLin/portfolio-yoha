@@ -1,10 +1,11 @@
 ---
 import Header from "../components/Header.astro";
-import Logo from "../components/Logo";
+import Hero from "../pages/Hero";
 import "../styles/global.css";
 import Overlay from "./Overlay.astro";
 import clsx from "clsx";
 const { pageTitle, className } = Astro.props;
+const pathname = Astro.originPathname;
 ---
 
 <html lang="en">
@@ -21,11 +22,12 @@ const { pageTitle, className } = Astro.props;
     />
     <title>{pageTitle}</title>
   </head>
-  <body class="relative p-2 min-h-screen w-screen overflow-auto">
+  <body class="relative pb-2 min-h-screen w-screen overflow-auto">
+    {pathname === "/" && <Hero client:load/>}
+
     <div class="max-w-[1200px] my-0 mx-auto">
       <!-- Overlay 提供紙感背景-->
       <Overlay />
-      <Logo />
       <Header />
 
       <div

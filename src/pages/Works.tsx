@@ -2,6 +2,7 @@ import React, { useEffect, useRef, type FC } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BlockLayout from "../layouts/BlockLayout";
+import Hashtag from "../components/Hashtag";
 
 // 註冊 ScrollTrigger 插件
 gsap.registerPlugin(ScrollTrigger);
@@ -23,7 +24,7 @@ type Props_Works = {
 
 const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);  
+  const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
         ref={triggerRef}
         className="flex flex-col gap-1 h-fit overflow-hidden pb-2"
       >
-        <h2>作品</h2>
+        <h2 className="pl-2">作品</h2>
 
         <div
           ref={containerRef}
@@ -82,7 +83,7 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
             {works.map((work) => (
               <div
                 key={work.id}
-                className="flex-shrink-0 w-[calc(100vw-4.5rem)] h-full bg-gray-100 rounded-lg flex flex-col justify-start lg:flex-row lg:items-center lg:justify-between lg:w-[calc(1200px-1.75rem)] p-6"
+                className="flex-shrink-0 w-[calc(100vw-4.5rem)] h-full bg-gray-100 rounded-lg flex flex-col justify-start lg:flex-row lg:items-center lg:justify-between lg:w-[calc(1200px-3.5rem)] p-6"
               >
                 {/* 圖片區塊 - 移動版置中顯示 */}
                 <img
@@ -94,17 +95,12 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
                 {/* 文字內容區塊 - 調整間距與排版 */}
                 <div className="flex flex-col w-[90%] mx-auto lg:w-[45%] lg:ml-12 lg:mr-0 lg:order-1">
                   <h3 className="text-2xl font-semibold mb-4">{work.title}</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed  md:text-lg">
+                  <p className="text-gray-600 mb-6 leading-relaxed md:text-lg">
                     {work.description}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {work.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium md:text-base"
-                      >
-                        {tag}
-                      </span>
+                      <Hashtag key={index} tag={tag} />
                     ))}
                   </div>
 
