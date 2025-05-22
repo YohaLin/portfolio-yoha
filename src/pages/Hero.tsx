@@ -1,34 +1,36 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import BottleSvg from "../components/BottleSvg";
 import DescriptionSvg from "../components/DescriptionSvg";
 import PotionSvg from "../components/PotionSvg";
 import WebSvg from "../components/WebSvg";
 import YohaSvg from "../components/YohaSvg";
 import gsap from "gsap";
+import BottleAfterSvg from "../components/BottleAfterSvg";
+import StarAfterSvg from "../components/StarAfterSvg";
 
 const Hero = () => {
   const circleOneRef = useRef<HTMLDivElement>(null);
   const circleTwoRef = useRef<HTMLDivElement>(null);
   const circleThreeRef = useRef<HTMLDivElement>(null);
   const circlesContainerRef = useRef<HTMLDivElement>(null);
-
-  // 直接引用各個元素
   const nameRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const bottleRef = useRef<HTMLDivElement>(null);
+  const bottleAfterRef = useRef<HTMLDivElement>(null);
+  const starAfterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const circleOne = circleOneRef.current;
     const circleTwo = circleTwoRef.current;
     const circleThree = circleThreeRef.current;
     const circlesContainer = circlesContainerRef.current;
-
-    // 獲取新的動畫元素引用
     const name = nameRef.current;
     const title = titleRef.current;
     const description = descriptionRef.current;
     const bottle = bottleRef.current;
+    const bottleAfter = bottleAfterRef.current;
+    const starAfter = starAfterRef.current;
 
     if (
       circleOne &&
@@ -38,7 +40,9 @@ const Hero = () => {
       name &&
       title &&
       description &&
-      bottle
+      bottle &&
+      bottleAfter &&
+      starAfter
     ) {
       // 設置所有內容元素初始狀態為隱藏
       gsap.set([name, description], {
@@ -47,7 +51,7 @@ const Hero = () => {
       });
 
       // 設置瓶子和標題的初始狀態
-      gsap.set(bottle, {
+      gsap.set([bottle, bottleAfter, starAfter], {
         autoAlpha: 0,
       });
 
@@ -119,7 +123,7 @@ const Hero = () => {
         });
       }, 0);
 
-      // 其他元素在1秒後開始淡入
+      // 其他元素在2秒後開始淡入
       mainTl.add(() => {
         const contentTl = gsap.timeline();
 
@@ -151,20 +155,67 @@ const Hero = () => {
               ease: "power2.out",
             },
             "-=0.2"
-          );
-      }, 2); // 在主時間線的1秒後執行
+          )
+          .to(
+            [bottleAfter, starAfter],
+            {
+              autoAlpha: 1,
+              duration: 1,
+              ease: "power2.out",
+            },
+            "-=0.2"
+          )
+          .to(bottle, {
+            autoAlpha: 0,
+            duration: 0.6,
+            ease: "power2.out",
+          });
+      }, 2);
+
+      // 添加上下抖動動畫
+      const floatAnimation = () => {
+        // 創建抖動時間線
+        const floatTl = gsap.timeline({
+          repeat: -1, // 無限重複
+          yoyo: true, // 來回運動
+        });
+
+        // 為 bottleAfter 添加上下抖動
+        floatTl.to([bottleAfter, bottle], {
+          y: "+=10", // 向下移動 10px
+          duration: 2,
+          ease: "sine.inOut",
+        });
+
+        // 為 starAfter 添加略微不同的上下抖動效果
+        gsap.to(starAfter, {
+          y: "+=12", // 向下移動 12px
+          duration: 2.3, // 稍微慢一點
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+        });
+
+        return floatTl;
+      };
+
+      // 在所有元素顯示後開始抖動動畫
+      mainTl.add(floatAnimation(), "+=0.5");
     }
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div
+      className="relative w-full h-screen overflow-hidden"
+      // onMouseMove={handleMouseMove}
+    >
       {/* 直接放置所有內容，不再使用 contentRef 包裹 */}
       <div className="relative z-20 w-full h-full">
         <div className="absolute flex flex-col justify-between pl-6 pb-10 w-full h-full md:w-[90%] mx-auto">
           {/* 名稱區塊 */}
           <div ref={nameRef} className="flex flex-col">
-            <YohaSvg className="w-[100px] h-[50px] lg:w-[160px] lg:h-[80px] fill-gray-600" />
-            <DescriptionSvg className="-mt-4 w-[200px] md:w-[300px] fill-gray-500" />
+            <YohaSvg className="w-[100px] h-[50px] lg:w-[160px] lg:h-[80px] fill-plum" />
+            <DescriptionSvg className="-mt-4 w-[200px] md:w-[300px] fill-rose" />
           </div>
 
           {/* 標題區塊 */}
@@ -184,11 +235,23 @@ const Hero = () => {
         >
           <BottleSvg className="w-full h-full" />
         </div>
+        <div
+          ref={bottleAfterRef}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px]"
+        >
+          <BottleAfterSvg className="w-full h-full" />
+        </div>
+        <div
+          ref={starAfterRef}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px]"
+        >
+          <StarAfterSvg className="w-full h-full" />
+        </div>
 
         {/* 描述區塊 */}
         <div
           ref={descriptionRef}
-          className="hidden absolute md:flex flex-col top-1/2 right-20 md:right-2 lg:left-[65%] w-1/2 max-w-[380px] text-sm font-istok text-gray-700"
+          className="hidden absolute md:flex flex-col top-1/2 right-20 md:right-2 lg:left-[65%] w-1/2 max-w-[380px] text-sm font-istok text-plum font-bold"
         >
           <p>I am Yoha Lin, a web developer.</p>
           <p>
@@ -203,15 +266,15 @@ const Hero = () => {
       <div ref={circlesContainerRef} className="absolute inset-0 z-0">
         {/* 圓圈 - 注意 z-index 順序與引用 */}
         <div
-          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#FFF4BE] transform-origin-center"
+          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center"
           ref={circleThreeRef}
         />
         <div
-          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#E0D391] transform-origin-center"
+          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center"
           ref={circleTwoRef}
         />
         <div
-          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-[#C4B155] transform-origin-center"
+          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center"
           ref={circleOneRef}
         />
       </div>
