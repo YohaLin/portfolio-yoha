@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import BottleSvg from "../components/BottleSvg";
 import DescriptionSvg from "../components/DescriptionSvg";
 import PotionSvg from "../components/PotionSvg";
@@ -20,7 +20,7 @@ const Hero = () => {
   const bottleAfterRef = useRef<HTMLDivElement>(null);
   const starAfterRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const circleOne = circleOneRef.current;
     const circleTwo = circleTwoRef.current;
     const circleThree = circleThreeRef.current;
@@ -46,17 +46,17 @@ const Hero = () => {
     ) {
       // 設置所有內容元素初始狀態為隱藏
       gsap.set([name, description], {
-        autoAlpha: 0,
+        opacity: 0,
         y: 10,
       });
 
       // 設置瓶子和標題的初始狀態
       gsap.set([bottle, bottleAfter, starAfter], {
-        autoAlpha: 0,
+        opacity: 0,
       });
 
       gsap.set(title, {
-        autoAlpha: 0,
+        opacity: 0,
         y: 10,
       });
 
@@ -106,7 +106,7 @@ const Hero = () => {
           .to(
             circlesContainer,
             {
-              autoAlpha: 0,
+              opacity: 0,
               duration: 0.5,
               ease: "power2.inOut",
             },
@@ -115,7 +115,7 @@ const Hero = () => {
 
         // 標題動畫 - 與第一個圓圈同時開始
         gsap.to(title, {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: 0.8,
           ease: "power2.out",
@@ -130,7 +130,7 @@ const Hero = () => {
         // 瓶子淡入
         contentTl
           .to(bottle, {
-            autoAlpha: 1,
+            opacity: 1,
             duration: 0.4,
             ease: "power2.out",
           })
@@ -138,7 +138,7 @@ const Hero = () => {
           .to(
             name,
             {
-              autoAlpha: 1,
+              opacity: 1,
               y: 0,
               duration: 0.4,
               ease: "power2.out",
@@ -149,7 +149,7 @@ const Hero = () => {
           .to(
             description,
             {
-              autoAlpha: 1,
+              opacity: 1,
               y: 0,
               duration: 0.4,
               ease: "power2.out",
@@ -159,14 +159,14 @@ const Hero = () => {
           .to(
             [bottleAfter, starAfter],
             {
-              autoAlpha: 1,
+              opacity: 1,
               duration: 1,
               ease: "power2.out",
             },
             "-=0.2"
           )
           .to(bottle, {
-            autoAlpha: 0,
+            opacity: 0,
             duration: 0.6,
             ease: "power2.out",
           });
@@ -207,7 +207,6 @@ const Hero = () => {
   return (
     <div
       className="relative w-full h-screen overflow-hidden"
-      // onMouseMove={handleMouseMove}
     >
       {/* 直接放置所有內容，不再使用 contentRef 包裹 */}
       <div className="relative z-20 w-full h-full">
@@ -231,19 +230,19 @@ const Hero = () => {
         {/* 瓶子 SVG 添加外層 div 並將 ref 綁定到 div */}
         <div
           ref={bottleRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px] opacity-0"
         >
           <BottleSvg className="w-full h-full" />
         </div>
         <div
           ref={bottleAfterRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px] opacity-0"
         >
           <BottleAfterSvg className="w-full h-full" />
         </div>
         <div
           ref={starAfterRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-1/2 max-w-[380px] opacity-0"
         >
           <StarAfterSvg className="w-full h-full" />
         </div>
