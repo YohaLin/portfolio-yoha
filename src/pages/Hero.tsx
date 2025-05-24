@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import BottleSvg from "../components/BottleSvg";
 import DescriptionSvg from "../components/DescriptionSvg";
 import PotionSvg from "../components/PotionSvg";
@@ -20,7 +20,7 @@ const Hero = () => {
   const bottleAfterRef = useRef<HTMLDivElement>(null);
   const starAfterRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const circleOne = circleOneRef.current;
     const circleTwo = circleTwoRef.current;
     const circleThree = circleThreeRef.current;
@@ -205,14 +205,12 @@ const Hero = () => {
   }, []);
 
   return (
-    <div
-      className="relative w-full h-screen overflow-hidden"
-    >
+    <div className="relative w-full h-screen overflow-hidden">
       {/* 直接放置所有內容，不再使用 contentRef 包裹 */}
       <div className="relative z-20 w-full h-full">
         <div className="absolute flex flex-col justify-between pl-6 pb-10 w-full h-full md:w-[90%] mx-auto">
           {/* 名稱區塊 */}
-          <div ref={nameRef} className="flex flex-col">
+          <div ref={nameRef} className="flex flex-col opacity-0">
             <YohaSvg className="w-[100px] h-[50px] lg:w-[160px] lg:h-[80px] fill-plum" />
             <DescriptionSvg className="-mt-4 w-[200px] md:w-[300px] fill-rose" />
           </div>
@@ -220,7 +218,7 @@ const Hero = () => {
           {/* 標題區塊 */}
           <div
             ref={titleRef}
-            className="flex flex-col items-start md:items-end md:flex-row md:gap-6 lg:gap-10"
+            className="flex flex-col items-start md:items-end md:flex-row md:gap-6 lg:gap-10 opacity-0"
           >
             <WebSvg className="w-[120px] lg:w-[200px]" />
             <PotionSvg className="w-[340px] lg:w-[560px] -mt-2 md:mt-0" />
@@ -250,7 +248,7 @@ const Hero = () => {
         {/* 描述區塊 */}
         <div
           ref={descriptionRef}
-          className="hidden absolute md:flex flex-col top-1/2 right-20 md:right-2 lg:left-[65%] w-1/2 max-w-[380px] text-sm font-istok text-plum font-bold"
+          className="hidden absolute md:flex flex-col top-1/2 right-20 md:right-2 lg:left-[65%] w-1/2 max-w-[380px] text-sm font-istok text-plum font-bold opacity-0"
         >
           <p>I am Yoha Lin, a web developer.</p>
           <p>
@@ -262,18 +260,18 @@ const Hero = () => {
       </div>
 
       {/* 圓圈容器 - 用於一起淡出所有圓圈 */}
-      <div ref={circlesContainerRef} className="absolute inset-0 z-0">
+      <div ref={circlesContainerRef} className="absolute inset-0 z-0 opacity-0">
         {/* 圓圈 - 注意 z-index 順序與引用 */}
         <div
-          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center"
+          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center opacity-0"
           ref={circleThreeRef}
         />
         <div
-          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center"
+          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center opacity-0"
           ref={circleTwoRef}
         />
         <div
-          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center"
+          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center opacity-0"
           ref={circleOneRef}
         />
       </div>
