@@ -260,18 +260,18 @@ const Hero = () => {
       </div>
 
       {/* 圓圈容器 - 用於一起淡出所有圓圈 */}
-      <div ref={circlesContainerRef} className="absolute inset-0 z-0 opacity-0">
+      <div ref={circlesContainerRef} className="absolute inset-0 z-0">
         {/* 圓圈 - 注意 z-index 順序與引用 */}
         <div
-          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center opacity-0"
+          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center"
           ref={circleThreeRef}
         />
         <div
-          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center opacity-0"
+          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center"
           ref={circleTwoRef}
         />
         <div
-          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center opacity-0"
+          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center"
           ref={circleOneRef}
         />
       </div>
