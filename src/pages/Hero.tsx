@@ -8,6 +8,8 @@ import gsap from "gsap";
 import BottleAfterSvg from "../components/BottleAfterSvg";
 import StarAfterSvg from "../components/StarAfterSvg";
 
+const LARGE_SCALE = 100;
+
 const Hero = () => {
   const circleOneRef = useRef<HTMLDivElement>(null);
   const circleTwoRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,10 @@ const Hero = () => {
       bottleAfter &&
       starAfter
     ) {
+      gsap.set([circleOne, circleTwo, circleThree], {
+        opacity: 1,
+      });
+
       // 設置所有內容元素初始狀態為隱藏
       gsap.set([name, description], {
         opacity: 0,
@@ -74,7 +80,7 @@ const Hero = () => {
               scale: 0,
             },
             {
-              scale: 50,
+              scale: LARGE_SCALE,
               duration: 2.3,
               ease: "power3.inOut",
             }
@@ -85,7 +91,7 @@ const Hero = () => {
               scale: 0,
             },
             {
-              scale: 50,
+              scale: LARGE_SCALE,
               duration: 2.3,
               ease: "power3.inOut",
             },
@@ -97,7 +103,7 @@ const Hero = () => {
               scale: 0,
             },
             {
-              scale: 50,
+              scale: LARGE_SCALE,
               duration: 2.3,
               ease: "power3.inOut",
             },
@@ -263,15 +269,15 @@ const Hero = () => {
       <div ref={circlesContainerRef} className="absolute inset-0 z-0">
         {/* 圓圈 - 注意 z-index 順序與引用 */}
         <div
-          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center"
+          className="absolute z-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-blush transform-origin-center opacity-0"
           ref={circleThreeRef}
         />
         <div
-          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center"
+          className="absolute z-11 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-rose transform-origin-center opacity-0"
           ref={circleTwoRef}
         />
         <div
-          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center"
+          className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-10 h-10 bg-plum transform-origin-center opacity-0"
           ref={circleOneRef}
         />
       </div>
