@@ -3,14 +3,14 @@ import { gsap } from "gsap";
 import BlockLayout from "../layouts/BlockLayout";
 import Hashtag from "../components/Hashtag";
 
-// 定義技能類型
+// Define skill type
 interface Skill {
   id: string;
   name: string;
   category: "frontend" | "other";
 }
 
-// 無限滾動標籤列組件的 Props
+// Props for infinite scroll tags component
 interface InfiniteScrollTagsProps {
   skills: Skill[];
   direction: "left" | "right";
@@ -18,7 +18,7 @@ interface InfiniteScrollTagsProps {
   tagClassName?: string;
 }
 
-// 無限滾動標籤列組件
+// Infinite scroll tags component
 const InfiniteScrollTags: React.FC<InfiniteScrollTagsProps> = ({
   skills,
   direction,
@@ -34,48 +34,59 @@ const InfiniteScrollTags: React.FC<InfiniteScrollTagsProps> = ({
 
     if (!containerElement || !itemsElement) return;
 
-    // 克隆標籤以確保足夠的內容進行滾動
+    // Clone tags to ensure enough content for scrolling
     const originalTags = itemsElement.querySelectorAll(".skill-tag");
-    const clonedTags = Array.from(originalTags).map((tag) =>
-      tag.cloneNode(true)
-    );
-    clonedTags.forEach((tag) => itemsElement.appendChild(tag));
 
-    // 計算整個標籤序列的寬度
-    const totalWidth = itemsElement.scrollWidth;
-
-    // 設置初始位置
-    if (direction === "right") {
-      gsap.set(itemsElement, { x: 0 });
-    } else {
-      gsap.set(itemsElement, { x: -totalWidth / 2 });
+    // Clone multiple times to ensure smooth infinite scroll
+    for (let i = 0; i < 3; i++) {
+      const clonedTags = Array.from(originalTags).map((tag) =>
+        tag.cloneNode(true)
+      );
+      clonedTags.forEach((tag) => itemsElement.appendChild(tag));
     }
 
-    // 創建無限滾動效果
+    // Calculate total width of the tag sequence
+    const totalWidth = itemsElement.scrollWidth;
+    const singleSetWidth = totalWidth / 4; // Since we have 4 sets (1 original + 3 clones)
+
+    let startX, endX;
+
+    if (direction === "right") {
+      // Moving right to left: start from right side, move to left
+      startX = 0;
+      endX = -singleSetWidth;
+    } else {
+      // Moving left to right: start from left side, move to right
+      startX = -singleSetWidth;
+      endX = 0;
+    }
+
+    // Set initial position
+    gsap.set(itemsElement, { x: startX });
+
+    // Create infinite scroll effect
     const scrollAnimation = gsap.to(itemsElement, {
-      x: direction === "right" ? -totalWidth / 2 : 0,
-      duration: totalWidth / speed,
+      x: endX,
+      duration: (singleSetWidth / speed) * 2,
       ease: "none",
       repeat: -1,
       onRepeat: () => {
-        if (direction === "right") {
-          gsap.set(itemsElement, { x: 0 });
-        } else {
-          gsap.set(itemsElement, { x: -totalWidth / 2 });
-        }
+        // Seamlessly reset to start position
+        gsap.set(itemsElement, { x: startX });
       },
     });
 
-    // 當滑鼠懸停時暫停動畫
-    containerElement.addEventListener("mouseenter", () =>
-      scrollAnimation.pause()
-    );
-    containerElement.addEventListener("mouseleave", () =>
-      scrollAnimation.play()
-    );
+    // Pause animation on hover
+    const handleMouseEnter = () => scrollAnimation.pause();
+    const handleMouseLeave = () => scrollAnimation.play();
 
-    // 清理函數
+    containerElement.addEventListener("mouseenter", handleMouseEnter);
+    containerElement.addEventListener("mouseleave", handleMouseLeave);
+
+    // Cleanup function
     return () => {
+      containerElement.removeEventListener("mouseenter", handleMouseEnter);
+      containerElement.removeEventListener("mouseleave", handleMouseLeave);
       scrollAnimation.kill();
     };
   }, [direction, speed]);
@@ -96,7 +107,7 @@ const InfiniteScrollTags: React.FC<InfiniteScrollTagsProps> = ({
 };
 
 const Skills = () => {
-  // 前端相關技能
+  // Frontend related skills
   const frontendSkills: Skill[] = [
     { id: "html-css", name: "HTML/CSS", category: "frontend" },
     { id: "tailwind", name: "Tailwind", category: "frontend" },
@@ -112,7 +123,7 @@ const Skills = () => {
     { id: "seo", name: "SEO", category: "frontend" },
   ];
 
-  // 其他技能
+  // Other skills
   const otherSkills: Skill[] = [
     { id: "ui-ux", name: "UI/UX Design", category: "other" },
     { id: "wireframe", name: "Wireframe", category: "other" },
@@ -135,20 +146,20 @@ const Skills = () => {
   return (
     <BlockLayout className="col-span-1 lg:col-span-12 md:p-2">
       <div className="flex flex-col gap-2">
-        {/* 前端技能 - 左到右 */}
+        {/* Frontend skills - moving left to right */}
         <InfiniteScrollTags
           skills={frontendSkills}
           direction="left"
           speed={100}
-          tagClassName="px-4 py-2 rounded-full bg-indigo-100 text-indigo-800 whitespace-nowrap"
+          tagClassName="bg-blush/40 text-plum"
         />
 
-        {/* 其他技能 - 右到左 */}
+        {/* Other skills - moving right to left */}
         <InfiniteScrollTags
           skills={otherSkills}
           direction="right"
           speed={80}
-          tagClassName="px-4 py-2 rounded-full bg-purple-100 text-purple-800 whitespace-nowrap"
+          tagClassName="bg-blush/40 text-plum"
         />
       </div>
     </BlockLayout>

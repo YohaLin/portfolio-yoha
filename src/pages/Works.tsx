@@ -3,11 +3,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BlockLayout from "../layouts/BlockLayout";
 import Hashtag from "../components/Hashtag";
+import EyeSvg from "../components/EyeSvg";
 
-// 註冊 ScrollTrigger 插件
+// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-// 定義作品項目的類型
+// Define work item type
 interface WorkItem {
   id: number;
   title: string;
@@ -17,7 +18,7 @@ interface WorkItem {
   websiteUrl?: string;
 }
 
-// 組件 props 類型
+// Component props type
 type Props_Works = {
   works?: WorkItem[];
 };
@@ -26,6 +27,10 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+
+  // 使用 useRef 而不是 useState 來避免閉包問題
+  const isMouseInWorkAreaRef = useRef<boolean>(false);
 
   useEffect(() => {
     let trigger: ScrollTrigger | undefined;
@@ -64,13 +69,104 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
     };
   }, []);
 
+  // Mouse follower effect
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+
+    const updateCursor = () => {
+      // 使用 .current 來獲取最新的值
+      if (isMouseInWorkAreaRef.current) {
+        cursorX += (mouseX - cursorX) * 0.35;
+        cursorY += (mouseY - cursorY) * 0.35;
+        cursor.style.transform = `translate(${cursorX - 30}px, ${cursorY - 30}px)`;
+      }
+      requestAnimationFrame(updateCursor);
+    };
+
+    const handleMouseMove = (e: Event) => {
+      const mouseEvent = e as MouseEvent;
+      mouseX = mouseEvent.clientX;
+      mouseY = mouseEvent.clientY;
+    };
+
+    const handleMouseEnter = (e: Event) => {
+      const mouseEvent = e as MouseEvent;
+      mouseX = mouseEvent.clientX;
+      mouseY = mouseEvent.clientY;
+      cursorX = mouseX;
+      cursorY = mouseY;
+
+      cursor.style.transform = `translate(${cursorX - 30}px, ${cursorY - 30}px)`;
+
+      // 更新 ref 的值
+      isMouseInWorkAreaRef.current = true;
+
+      gsap.to(cursor, {
+        opacity: 1,
+        ease: "back.out(1.7)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      });
+    };
+
+    const handleMouseLeave = () => {
+      // 更新 ref 的值
+      isMouseInWorkAreaRef.current = false;
+
+      gsap.to(cursor, {
+        opacity: 0,
+        display: "none",
+      });
+    };
+
+    const workLinks = document.querySelectorAll(".work-item-link");
+
+    workLinks.forEach((link) => {
+      link.addEventListener("mouseenter", handleMouseEnter);
+      link.addEventListener("mouseleave", handleMouseLeave);
+      link.addEventListener("mousemove", handleMouseMove);
+    });
+
+    updateCursor();
+
+    return () => {
+      workLinks.forEach((link) => {
+        link.removeEventListener("mouseenter", handleMouseEnter);
+        link.removeEventListener("mouseleave", handleMouseLeave);
+        link.removeEventListener("mousemove", handleMouseMove);
+      });
+    };
+  }, []); // 空的依賴性陣列
+
   return (
     <BlockLayout className="col-span-1 lg:col-span-12">
+      {/* Custom cursor */}
+      <div
+        ref={cursorRef}
+        className="fixed top-0 left-0 z-50 opacity-0 pointer-events-none flex-col"
+        style={{
+          mixBlendMode: "difference",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <p className="text-white text-xl">CHECK</p>
+        <div className="w-fit h-16 p-2 bg-aqua rounded-full">
+          <EyeSvg className="w-12 h-12" />
+        </div>
+      </div>
+
       <div
         ref={triggerRef}
         className="flex flex-col gap-1 h-fit overflow-hidden pb-2"
       >
-        <h2 className="pl-2">作品</h2>
+        <h2 className="pl-2">Portfolio</h2>
 
         <div
           ref={containerRef}
@@ -78,57 +174,42 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
         >
           <div
             ref={sectionRef}
-            className="absolute top-0 left-0 flex gap-4 h-full px-2"
+            className="absolute top-0 left-0 flex gap-4 md:gap-6 h-full px-2"
           >
             {works.map((work) => (
               <div
                 key={work.id}
-                className="flex-shrink-0 w-[calc(100vw-4.5rem)] h-full bg-gray-100 rounded-lg flex flex-col justify-start lg:flex-row lg:items-center lg:justify-between lg:w-[calc(1200px-3.5rem)] p-6"
+                className="group flex-shrink-0 max-w-[calc(100vw-4.5rem)] overflow-hidden rounded-lg"
               >
-                {/* 圖片區塊 - 移動版置中顯示 */}
-                <img
-                  src={work.imageSrc}
-                  alt={work.title}
-                  className="w-[85%] max-w-80 mx-auto object-cover aspect-square lg:w-[45%] lg:max-w-none lg:order-2"
-                />
+                <a
+                  href={work.websiteUrl}
+                  target="_blank"
+                  className="work-item-link w-[calc(100vw-4.5rem)] h-full bg-cream rounded-lg flex flex-col justify-start lg:flex-row lg:items-center lg:justify-between lg:w-[calc(1200px-3.5rem)] p-6 cursor-none transition-transform duration-300 hover:scale-[1.02]"
+                >
+                  <img
+                    src={work.imageSrc}
+                    alt={work.title}
+                    className="w-[85%] max-w-80 mx-auto object-cover aspect-square lg:w-[45%] lg:max-w-none lg:order-2"
+                  />
 
-                {/* 文字內容區塊 - 調整間距與排版 */}
-                <div className="flex flex-col w-[90%] mx-auto lg:w-[45%] lg:ml-12 lg:mr-0 lg:order-1">
-                  <h3 className="text-2xl font-semibold mb-4">{work.title}</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed md:text-lg">
-                    {work.description}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {work.tags.map((tag, index) => (
-                      <Hashtag key={index} tag={tag} />
-                    ))}
-                  </div>
-
-                  {work.websiteUrl && (
-                    <a
-                      href={work.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 ease-in-out w-fit"
-                    >
-                      <span>查看網站</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 ml-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  <div className="flex flex-col w-[90%] mx-auto lg:w-[45%] lg:ml-12 lg:mr-0 lg:order-1">
+                    <p className="text-2xl mb-2 md:mb-4 font-istok font-extrabold text-plum group-hover:text-teal">
+                      {work.title}
+                    </p>
+                    <p className="mb-6 leading-relaxed md:text-lg text-plum font-extrabold font-tenor group-hover:text-teal">
+                      {work.description}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {work.tags.map((tag, index) => (
+                        <Hashtag
+                          key={index}
+                          tag={tag}
+                          className="bg-rose/40 text-plum group-hover:bg-aqua/30 group-hover:text-teal"
                         />
-                      </svg>
-                    </a>
-                  )}
-                </div>
+                      ))}
+                    </div>
+                  </div>
+                </a>
               </div>
             ))}
           </div>
@@ -141,27 +222,35 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
 const defaultWorks: WorkItem[] = [
   {
     id: 1,
-    title: "茶葉先森",
+    title: "Clinic Appointment System",
     description:
-      "使用 Next.js 和 Tailwind CSS 開發的個人網站，具有響應式設計。網站展示了我接案畫畫的作品與形象。",
-    imageSrc: "/images/website/theaDaily.png",
+      "A comprehensive appointment management system designed specifically for clinics, providing appointment scheduling for patients. It offers a simple and intuitive user interface that allows patients to enjoy clinic services more quickly and smoothly.",
+    imageSrc: "/images/website/clinic.png",
     tags: [
-      "Next.js",
+      "React.js",
+      "Typescript",
       "Tailwind",
-      "Responsive Design",
-      "Landing Page",
+      "i18next",
       "Vercel",
+      "LottieFiles",
     ],
-    websiteUrl: "https://example.com/tea-site", // 添加網站連結
+    websiteUrl: "https://clinic-yoha.vercel.app/zh-TW/",
   },
   {
     id: 2,
-    title: "診所掛號系統",
+    title: "Thea Daily",
     description:
-      "專為診所設計的完整掛號管理系統，提供客人預約排程。提供了簡單直覺的使用者介面，讓客人更快速且流暢享受診所服務。特別設計的線上預約系統減少了客戶等待時間，並優化了診所資源分配，促進業務增長超過25%。",
-    imageSrc: "/images/website/clinic.png",
-    tags: ["React.js", "Material UI", "Firebase", "Cloud Functions"],
-    websiteUrl: "https://example.com/clinic-system", // 添加網站連結
+      "A personal website developed using Next.js and Tailwind CSS with responsive design. The website showcases my freelance illustration work and brand image.",
+    imageSrc: "/images/website/theaDaily.png",
+    tags: [
+      "Next.js",
+      "Typescript",
+      "Styled-components",
+      "Responsive Design",
+      "Vercel",
+    ],
+    websiteUrl: "https://thea-daily.vercel.app/",
   },
 ];
+
 export default Works;

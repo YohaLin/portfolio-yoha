@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Tenro+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=tenor+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Tenor+Sans&display=swap");
 @font-face {
   font-family: HanaMeatball-Medium;
@@ -13,8 +13,8 @@
 
 @theme {
   --my-border: 2px;
-  --font-tenro: "Tenro Sans", "sans-serif";
-  --font-istok: "Istok Web", "sans-serif";
+  --font-tenor: "Tenor Sans", "sans-serif";
+  --font-istok: "Istok Web", "serif";
   --color-cream: #fff6e1;
   --color-blush: #ffd2c9;
   --color-rose: #ae4762;
