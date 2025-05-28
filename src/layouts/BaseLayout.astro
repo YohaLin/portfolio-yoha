@@ -16,14 +16,11 @@ const pathname = Astro.originPathname;
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Italiana&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+
     <title>{pageTitle}</title>
   </head>
   <body class="relative pb-2 min-h-screen w-screen overflow-auto">
-    {pathname === "/" && <Hero client:load/>}
+    {pathname === "/" && <Hero client:load />}
 
     <div class="max-w-[1200px] my-0 mx-auto">
       <!-- Overlay 提供紙感背景-->
@@ -32,7 +29,7 @@ const pathname = Astro.originPathname;
 
       <div
         id="site-wrapper"
-        class="border-(length:--my-border) flex-1 mt-[calc(var(--my-border)*-1)]"
+        class="border-frame flex-1 mt-[calc(var(--my-border)*-1)]"
       >
         <div class={clsx(className)}>
           <slot />

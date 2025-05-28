@@ -27,7 +27,7 @@ const Experience = () => {
 
   return (
     <BlockLayout className="col-span-1 lg:col-span-4 flex flex-col items-end min-h-[650px] sm:min-h-[500px] lg:min-h-[700px] xl:min-h-[650px]">
-      <div className="flex justify-end items-center gap-[0.5px] border-(length:--my-border) w-fit mr-[calc(var(--my-border)-8px)] -mt-[calc(var(--my-border)+4px)] lg:-mr-[calc(var(--my-border)+20px)] lg:-mt-[calc(var(--my-border)+20px)] lg:w-[calc(100%+44px)] lg:justify-center">
+      <div className="flex justify-end items-center gap-[0.5px] border-frame w-fit mr-[calc(var(--my-border)-8px)] -mt-[calc(var(--my-border)+4px)] lg:-mr-[calc(var(--my-border)+20px)] lg:-mt-[calc(var(--my-border)+20px)] lg:w-[calc(100%+44px)] lg:justify-center">
         <button
           type="button"
           className="cursor-pointer hover:opacity-70 transition-opacity lg:order-3"

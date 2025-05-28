@@ -18,11 +18,11 @@ const links = [
 ---
 
 <header
-  class="sticky top-0 z-10 border-(length:--my-border) text-xs bg-white w-full"
+  class="sticky top-0 z-10 border-frame text-xs bg-white w-full"
 >
   <ul class="flex items-center justify-between w-full h-12">
     {links.map(item => (
-      <li class="flex-1 text-center font-mono text-sm md:text-xl"><a href={item.href}>{item.title}</a></li>
+      <li class="flex-1 text-center font-mono text-sm text-plum md:text-xl"><a href={item.href}>{item.title}</a></li>
     <Divider className="h-6 last:hidden" />
     ))}
   </ul>

@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=tenor+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Tenor+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Italiana&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap");
 @font-face {
   font-family: HanaMeatball-Medium;
   src:
@@ -15,6 +16,7 @@
   --my-border: 2px;
   --font-tenor: "Tenor Sans", "sans-serif";
   --font-istok: "Istok Web", "serif";
+  --font-italiana: "Italiana", "serif";
   --color-cream: #fff6e1;
   --color-blush: #ffd2c9;
   --color-rose: #ae4762;
@@ -25,9 +27,8 @@
 
 /* 設定字體 */
 @layer base {
-  /* 設定所有英文字體為 Italiana */
   body {
-    font-family: "Italiana", "HanaMeatball-Medium", "Noto Serif TC", serif;
+    font-family: "Istok Web", "Tenor Sans", "Noto Serif TC";
     background-color: white;
     box-sizing: border-box;
   }
@@ -41,16 +42,8 @@
   h6 {
     padding: 0;
     margin: 0;
-    font-family: '"Noto Sans"', "Noto Sans TC", sans-serif;
     font-weight: 500;
   }
-
-  /* 設定所有段落文字使用 Noto Serif TC */
-  /* p,
-  li,
-  blockquote figcaption {
-    font-family: "Noto Serif TC", serif;
-  } */
 
   * {
     letter-spacing: 0.2px;
@@ -66,12 +59,19 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  .border-frame {
+    border: var(--my-border) solid var(--color-plum);
+  }
+
+  .border-frame-dashed {
+    border: var(--my-border) dashed var(--color-plum);
+  }
 }
 
 /* 樣式開始 */
 html {
   background-color: #fff6e1;
-  font-family: sans-serif;
 }
 
 body {

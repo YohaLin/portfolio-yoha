@@ -1,4 +1,3 @@
-import Potion from "../components/Potion";
 import BlockLayout from "../layouts/BlockLayout";
 
 const Intro = () => {
