@@ -211,7 +211,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-[100dvh] overflow-hidden">
       {/* 直接放置所有內容，不再使用 contentRef 包裹 */}
       <div className="relative z-20 w-full h-full">
         <div className="absolute flex flex-col justify-between pl-6 pb-10 w-full h-full md:w-[90%] mx-auto">
