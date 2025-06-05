@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BlockLayout from "../layouts/BlockLayout";
 import Hashtag from "../components/Hashtag";
 import EyeSvg from "../components/EyeSvg";
+import clsx from "clsx";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -24,6 +25,7 @@ type Props_Works = {
 };
 
 const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
+  const isDesktop = window.innerWidth >= 1024; // 判斷是否為桌面端
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +73,8 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
 
   // Mouse follower effect
   useEffect(() => {
+    if (!isDesktop) return; // 只在桌面端啟用
+
     const cursor = cursorRef.current;
     if (!cursor) return;
 
@@ -148,19 +152,21 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
   return (
     <BlockLayout className="col-span-1 lg:col-span-12">
       {/* Custom cursor */}
-      <div
-        ref={cursorRef}
-        className="fixed top-0 left-0 z-50 opacity-0 pointer-events-none flex-col"
-        style={{
-          mixBlendMode: "difference",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <p className="text-white text-xl">CHECK</p>
-        <div className="w-fit h-16 p-2 bg-aqua rounded-full">
-          <EyeSvg className="w-12 h-12" />
+      {isDesktop && (
+        <div
+          ref={cursorRef}
+          className="fixed top-0 left-0 z-50 opacity-0 pointer-events-none flex-col"
+          style={{
+            mixBlendMode: "difference",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <p className="text-white text-xl">CHECK</p>
+          <div className="w-fit h-16 p-2 bg-aqua rounded-full">
+            <EyeSvg className="w-12 h-12" />
+          </div>
         </div>
-      </div>
+      )}
 
       <div
         ref={triggerRef}
@@ -184,7 +190,12 @@ const Works: FC<Props_Works> = ({ works = defaultWorks }) => {
                 <a
                   href={work.websiteUrl}
                   target="_blank"
-                  className="work-item-link w-[calc(100vw-4.5rem)] h-full bg-cream rounded-lg flex flex-col justify-start lg:flex-row lg:items-center lg:justify-between lg:w-[calc(1200px-3.5rem)] p-6 cursor-none transition-transform duration-300 hover:scale-[1.02]"
+                  className={clsx(
+                    "work-item-link w-[calc(100vw-4.5rem)] h-full bg-cream rounded-lg flex flex-col justify-start lg:flex-row lg:items-center lg:justify-between lg:w-[calc(1200px-3.5rem)] p-6 transition-transform duration-300 hover:scale-[1.02]",
+                    {
+                      "cursor-none": isDesktop,
+                    }
+                  )}
                 >
                   <img
                     src={work.imageSrc}

@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Experience from "./Experience";
+import Intro from "./Intro";
+---
+
+<BaseLayout>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--my-border)]">
+    <Intro client:only="react" />
+    <Experience client:only="react" />
+  </div>
+</BaseLayout>

@@ -18,10 +18,8 @@ const Prescription: React.FC<PrescriptionProps> = ({
   patientComplaint = "在現代軟體開發流程中，前後端團隊常常面臨一個普遍的挑戰：當接到新需求時，後端 API 的開發可能無法及時滿足前端的串接需求，但 PM 卻急需看到功能 Demo...",
   className = "",
 }) => {
-
-  const handleMouseIn = (e: React.MouseEvent<HTMLDivElement>) => {  }
   return (
-    <BlockLayout className={`col-span-1 lg:col-span-8 ${className}`}>
+    <BlockLayout className={className}>
       <div className="relative overflow-hidden h-full border-2 border-plum p-4">
         <RodSvg className="absolute opacity-15 left-1/2 top-1/2 -translate-1/2" />
         {/* 圓點邊框裝飾 */}

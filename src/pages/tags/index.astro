@@ -1,44 +1,96 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hashtag from "../../components/Hashtag";
 
-const allPosts = await getCollection('blog')
+const allPosts = await getCollection("blog");
+const allData = allPosts.map((post) => ({
+  ...post.data,
+  slug: post.id,
+}));
 
-const tags = [
-  ...new Set(allPosts.map((post) => post.data.tags).flat()),
-];
-
-const pageTitle = "Tag Index";
+const pageTitle = "技術文章";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <div class="tags">
-    {
-      tags.map((tag) => (
-        <p class="tag">
-          <a href={`/tags/${tag}`}>{tag}</a>
-        </p>
-      ))
-    }
+  <div class="px-4 py-2 h-[calc(100vh-62px)] overflow-y-auto no-scrollbar">
+    <!-- 頁面標題區域 -->
+    <div class="text-center">
+      <h1 class="font-tenor">Frontend Prescription</h1>
+    </div>
+
+    <!-- 文章網格 -->
+    <div
+      class="grid auto-fit-[350px] gap-6 mt-8"
+      style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr))"
+    >
+      {
+        allData.map((data) => {
+          const { title, pubDate, subtitle, tags, slug } = data;
+          const formattedDate = new Date(pubDate).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          return (
+            <article class="rounded-xl border border-plum/30 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md hover:shadow-black/10 hover:border-plum overflow-hidden h-fit group">
+              <a
+                href={`/posts/${slug}`}
+                class="block h-full no-underline text-inherit"
+              >
+                <div class="p-6 h-full flex flex-col">
+                  <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                    <time class="text-sm text-gray-500 font-medium">
+                      {formattedDate}
+                    </time>
+                    {tags && tags.length > 0 && (
+                      <div class="flex gap-2 flex-wrap">
+                        {tags.slice(0, 2).map((tag) => (
+                          <Hashtag tag={tag} className="bg-rose/40 text-plum" />
+                        ))}
+                        {tags.length > 2 && (
+                          <Hashtag
+                            tag={`+${tags.length - 2}`}
+                            className="bg-cream/70 text-plum"
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <h2 class="text-xl font-semibold text-plum leading-tight mb-1 transition-colors duration-200">
+                    {title}
+                  </h2>
+
+                  {subtitle && (
+                    <p class="text-plum/70 leading-relaxed mb-6 flex-grow text-sm">
+                      {subtitle}
+                    </p>
+                  )}
+
+                  <div class="flex items-center gap-2 text-plum font-medium text-sm mt-auto transition-all duration-200">
+                    <span class="transition-opacity duration-200">
+                      Read more
+                    </span>
+                    <svg
+                      class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-7-7 7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </article>
+          );
+        })
+      }
+    </div>
   </div>
 </BaseLayout>
-
-<style>
-  a {
-    color: #00539f;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: 0.5em;
-    padding: 0.5em 1em;
-    font-size: 1.15em;
-    background-color: #f8fcfd;
-  }
-</style>
