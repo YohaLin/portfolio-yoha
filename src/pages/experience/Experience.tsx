@@ -1,39 +1,67 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CaretLeft from "../../assets/svgs/CaretLeft";
 import CaretRight from "../../assets/svgs/CaretRight";
 import Divider from "../../components/Divider";
 import BlockLayout from "../../layouts/BlockLayout";
 import Hashtag from "../../components/Hashtag";
+import clsx from "clsx";
 
-const Experience = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const currentExp = EXPERIENCE[currentIndex];
+type Props_Experience = {
+  currentIndex: number;
+  setCurrentIndex: (index: number) => void;
+};
 
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    } else {
-      setCurrentIndex(EXPERIENCE.length - 1);
+const Experience = ({ currentIndex, setCurrentIndex }: Props_Experience) => {
+  const [displayIndex, setDisplayIndex] = useState(currentIndex);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const currentExp = EXPERIENCE[displayIndex];
+
+  const isFirst = currentIndex === 0;
+  const isLast = currentIndex === EXPERIENCE.length - 1;
+
+  // 處理 currentIndex 變化的動畫
+  useEffect(() => {
+    if (currentIndex !== displayIndex) {
+      setIsTransitioning(true);
+
+      // 淡出後更新內容
+      setTimeout(() => {
+        setDisplayIndex(currentIndex);
+        setIsTransitioning(false);
+      }, 150); // 淡出時間
     }
-  };
+  }, [currentIndex, displayIndex]);
 
-  const handleNext = () => {
-    if (currentIndex < EXPERIENCE.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(0);
-    }
-  };
+  const handlePrev = useCallback(() => {
+    if (currentIndex === 0) return;
+    setCurrentIndex(currentIndex - 1);
+  }, [currentIndex]);
+
+  const handleNext = useCallback(() => {
+    if (currentIndex === EXPERIENCE.length - 1) return;
+    setCurrentIndex(currentIndex + 1);
+  }, [currentIndex]);
 
   return (
     <BlockLayout className="col-span-1 lg:col-span-4 flex flex-col items-end min-h-[650px] sm:min-h-[500px] lg:min-h-[700px] xl:min-h-[650px] bg-cream">
       <div className="flex justify-end items-center gap-[0.5px] border-frame w-fit mr-[calc(var(--my-border)-8px)] -mt-[calc(var(--my-border)+4px)] lg:-mr-[calc(var(--my-border)+20px)] lg:-mt-[calc(var(--my-border)+20px)] lg:w-[calc(100%+44px)] lg:justify-center">
         <button
           type="button"
-          className="cursor-pointer hover:opacity-70 transition-opacity lg:order-3"
+          className={clsx("transition-opacity lg:order-3", {
+            "cursor-not-allowed": isFirst,
+            "cursor-pointer": !isFirst,
+          })}
           onClick={handlePrev}
         >
-          <CaretLeft width={28} height={28} />
+          <CaretLeft
+            width={28}
+            height={28}
+            className={clsx({
+              "fill-plum/40 stroke-plum/40": isFirst,
+              "fill-plum stroke-plum hover:opacity-70": !isFirst,
+            })}
+          />
         </button>
         <Divider className="h-7 lg:order-2" />
         <p className="text-sm px-2 text-center lg:flex-1 lg:order-1">
@@ -42,17 +70,36 @@ const Experience = () => {
         <Divider className="h-7 lg:order-4" />
         <button
           type="button"
-          className="cursor-pointer hover:opacity-70 transition-opacity lg:order-5"
+          className={clsx("transition-opacity lg:order-5", {
+            "cursor-not-allowed": isLast,
+            "cursor-pointer": !isLast,
+          })}
           onClick={handleNext}
+          disabled={isLast}
         >
-          <CaretRight width={28} height={28} />
+          <CaretRight
+            width={28}
+            height={28}
+            className={clsx({
+              "fill-plum/40 stroke-plum/40": isLast,
+              "fill-plum stroke-plum hover:opacity-70": !isLast,
+            })}
+          />
         </button>
       </div>
-      <div className="flex flex-col w-full mt-4">
+
+      {/* 內容區域加上淡入淡出動畫 */}
+      <div
+        className={`flex flex-col w-full mt-4 transition-opacity duration-300 ease-in-out ${
+          isTransitioning ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <div className="flex items-baseline gap-2 mb-2">
           <h2 className="text-xl font-semibold">{currentExp.title}</h2>
           <a href={currentExp.company.href}>
-            <p className="text-sm text-gray-600 border-b border-plum">@{currentExp.company.title}</p>
+            <p className="text-sm text-gray-600 border-b border-plum">
+              @{currentExp.company.title}
+            </p>
           </a>
         </div>
         <div className="text-sm mb-4">
@@ -112,9 +159,7 @@ const Experience = () => {
   );
 };
 
-export default Experience;
-
-// 更新 EXPERIENCE 陣列中的第一個項目
+// EXPERIENCE 數據保持不變
 const EXPERIENCE = [
   {
     order: 0,
@@ -133,7 +178,7 @@ const EXPERIENCE = [
         </p>
         <p className="mb-2">
           Built a mock server to enable parallel frontend-backend workflows and
-          cross-device testing. Introduced panda-css and design tokens to create
+          cross-device testing. Introduced panda-css and design tokens to create
           a scalable, consistent design system for responsive layouts.
         </p>
         <p className="mb-2">
@@ -226,3 +271,5 @@ const EXPERIENCE = [
     ),
   },
 ];
+
+export default Experience;

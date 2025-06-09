@@ -1,43 +1,54 @@
 ---
+// MarkdownLayout.astro
 import BaseLayout from "./BaseLayout.astro";
 const { frontmatter } = Astro.props;
 ---
 
-<BaseLayout pageTitle={frontmatter.title} className="prose border">
-  <h3>{frontmatter.subtitle}</h3>
-  <p>{frontmatter.pubDate.toLocaleDateString()}</p>
-  <p><em>{frontmatter.description}</em></p>
-  <p>Written by: {frontmatter.author}</p>
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+<BaseLayout pageTitle={frontmatter.title}>
+  <article
+    class="w-full max-w-none px-6 lg:px-8 py-10 lg:py-14 mx-auto
+           prose prose-base lg:prose-lg"
+  >
+    <h3>{frontmatter.subtitle}</h3>
+    <p>{frontmatter.pubDate.toLocaleDateString()}</p>
+    <p><em>{frontmatter.description}</em></p>
+    <p>Written by: {frontmatter.author}</p>
 
-  <slot />
-  <div class="tags">
+    {/* 封面圖片：置中、RWD、最大寬度 768px */}
+    <img
+      src={frontmatter.image.url}
+      alt={frontmatter.image.alt}
+      class="mx-auto my-6 h-auto w-full max-w-3xl rounded-lg"
+    />
+
+    <slot />
+
+    {/* 如需 tag，取消註解 */}
     {
-      frontmatter.tags.map((tag: string) => (
-        <p class="tag">
-          <a href={`/tags/${tag}`}>{tag}</a>
-        </p>
-      ))
+      /*
+    <div class="flex flex-wrap gap-2 pt-6">
+      {frontmatter.tags.map((tag: string) => (
+        <a
+          href={`/tags/${tag}`}
+          class="rounded-full border border-gray-300 px-3 py-1 text-sm
+                 hover:bg-gray-100 transition"
+        >
+          #{tag}
+        </a>
+      ))}
+    </div>
+    */
     }
-  </div>
+  </article>
 </BaseLayout>
 
 <style>
+  /* 全站連結色可自行調整 */
   a {
     color: #00539f;
   }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: 0.5em;
-    padding: 0.5em 1em;
-    font-size: 1.15em;
-    background-color: #f8fcfd;
+  img {
+    max-width: 50%;
+    height: auto;
   }
 </style>
